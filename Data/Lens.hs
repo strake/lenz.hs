@@ -1,7 +1,7 @@
 module Data.Lens (Lens,
                   lens, iso,
                   get, set, modify,
-                  fstL, sndL, swapL) where
+                  fstL, sndL, swapL, unitL) where
 
 import Prelude hiding (id)
 
@@ -41,3 +41,6 @@ sndL f = id *** f >>> uncurry (fmap ∘ (,))
 
 swapL :: Lens (a, b) (c, d) (b, a) (d, c)
 swapL = iso swap swap
+
+unitL :: Lens α α () ()
+unitL = lens (pure ()) (\ () -> id)
