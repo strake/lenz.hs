@@ -1,7 +1,7 @@
 module Data.Lens (Lens,
                   lens, iso,
                   get, set, modify,
-                  fstL, sndL, swapL, unitL) where
+                  fstL, sndL, swapL, unitL, bitL) where
 
 import Prelude hiding (id)
 
@@ -9,6 +9,8 @@ import Control.Applicative
 import Control.Arrow
 import Control.Category
 import Control.Category.Unicode
+import Data.Bits (Bits (..))
+import Data.Bool (bool)
 import Data.Functor.Identity
 import Data.Tuple (swap)
 
@@ -44,3 +46,6 @@ swapL = iso swap swap
 
 unitL :: Lens α α () ()
 unitL = lens (pure ()) (\ () -> id)
+
+bitL :: Bits a => Int -> Lens a a Bool Bool
+bitL = liftA2 lens (flip testBit) (flip (flip ∘ bool clearBit setBit))
