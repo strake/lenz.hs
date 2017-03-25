@@ -26,13 +26,13 @@ lens get set ret = liftA2 fmap (flip set) (ret ∘ get)
 iso :: (α → a) → (b → β) → Lens α β a b
 iso f g = (fmap g ∘) ∘ (∘ f)
 
-get :: Lens α β a b → α → a
+get :: ((a → Const a b) → α → Const a β) → α → a
 get l = getConst ∘ l Const
 
-set :: Lens α β a b → b → α → β
+set :: ((a → Identity b) → α → Identity β) → b → α → β
 set l = modify l ∘ pure
 
-modify :: Lens α β a b → (a → b) → α → β
+modify :: ((a → Identity b) → α → Identity β) → (a → b) → α → β
 modify l f = runIdentity ∘ l (Identity ∘ f)
 
 fstL :: Lens (a, c) (b, c) a b
