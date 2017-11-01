@@ -1,4 +1,4 @@
-module Data.Lens (Lens,
+module Data.Lens (Lens, Refractor,
                   lens, iso,
                   get, set, modify,
                   fstL, sndL, swapL, unitL, bitL) where
