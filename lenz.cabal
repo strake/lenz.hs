@@ -1,5 +1,5 @@
 name:           lenz
-version:        0.1.2.2
+version:        0.2.0.0
 synopsis:       Van Laarhoven lenses
 license:        OtherLicense
 license-file:   LICENSE
@@ -13,6 +13,6 @@ tested-with:    GHC ==7.10.*,
                 GHC ==8.0.*
 
 library
-  exposed-modules:      Data.Lens
+  exposed-modules:      Control.Lens
   build-depends:        base >= 4.8 && <5, base-unicode-symbols >= 0.1 && <0.3, transformers >=0.2 && <0.6
   extensions:           UnicodeSyntax, RankNTypes, ConstraintKinds, GADTs

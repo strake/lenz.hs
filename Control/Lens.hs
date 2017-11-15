@@ -1,7 +1,7 @@
-module Data.Lens (Lens, Refractor,
-                  lens, iso,
-                  get, set, modify,
-                  fstL, sndL, swapL, unitL, bitL) where
+module Control.Lens (Lens, Refractor, Traversal,
+                     lens, iso,
+                     get, set, modify,
+                     fstL, sndL, swapL, unitL, bitL) where
 
 import Prelude hiding (id)
 
