@@ -1,9 +1,9 @@
 name:           lenz
 version:        0.2.0.0
 synopsis:       Van Laarhoven lenses
-license:        OtherLicense
-license-file:   LICENSE
+license:        BSD3
 author:	        M Farkas-Dyck
+copyright:      © Unix year 47 M Farkas-Dyck
 maintainer:     strake888@gmail.com
 category:       Data, Lenses
 build-type:     Simple
