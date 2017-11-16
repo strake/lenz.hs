@@ -1,5 +1,5 @@
 name:           lenz
-version:        0.2.0.0
+version:        0.2.1.0
 synopsis:       Van Laarhoven lenses
 license:        BSD3
 author:	        M Farkas-Dyck
@@ -14,5 +14,9 @@ tested-with:    GHC ==7.10.*,
 
 library
   exposed-modules:      Control.Lens
-  build-depends:        base >= 4.8 && <5, base-unicode-symbols >= 0.1 && <0.3, transformers >=0.2 && <0.6
-  extensions:           UnicodeSyntax, RankNTypes, ConstraintKinds, GADTs
+  build-depends:        base >= 4.8 && <5
+                      , base-unicode-symbols >= 0.1 && <0.3
+                      , profunctors >=5.2.1 && <5.3
+                      , transformers >=0.2 && <0.6
+  extensions:           UnicodeSyntax, RankNTypes, ConstraintKinds, GADTs, DeriveFunctor
+  ghc-options:          -Wall -Wno-name-shadowing
