@@ -1,4 +1,4 @@
-module Control.Lens (Lens, Refractor, Traversal,
+module Control.Lens (Lens, Refractor, Traversal, Iso,
                      lens, iso,
                      get, set, modify, mapping,
                      fstL, sndL, swapL, unitL, bitL) where
