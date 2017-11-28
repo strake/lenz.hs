@@ -6,7 +6,6 @@ module Control.Lens (Lens, Refractor, Traversal, Iso,
 import Prelude hiding (id)
 
 import Control.Applicative
-import Control.Arrow
 import Control.Category
 import Control.Category.Unicode
 import Data.Bits (Bits (..))
