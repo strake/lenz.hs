@@ -18,5 +18,5 @@ library
                       , base-unicode-symbols >= 0.1 && <0.3
                       , hs-functors >=0.1.1 && <0.2
                       , transformers >=0.2 && <0.6
-  extensions:           UnicodeSyntax, RankNTypes, ConstraintKinds, GADTs, DeriveFunctor
+  extensions:           UnicodeSyntax, RankNTypes, ConstraintKinds, DeriveFunctor
   ghc-options:          -Wall -Wno-name-shadowing

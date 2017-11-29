@@ -14,13 +14,13 @@ import Data.Functor.Identity
 import Data.Profunctor
 import Data.Tuple (swap)
 
-type Refractor c d α β a b = ∀ p f . (d f, c p) ⇒ p a (f b) → p α (f β)
+type Refractor p c α β a b = ∀ f . c f ⇒ p a (f b) → p α (f β)
 
-type Lens α β a b = Refractor ((~) (→)) Functor α β a b
+type Lens α β a b = Refractor (→) Functor α β a b
 
-type Traversal α β a b = Refractor ((~) (→)) Applicative α β a b
+type Traversal α β a b = Refractor (→) Applicative α β a b
 
-type Iso α β a b = Refractor Profunctor Functor α β a b
+type Iso α β a b = ∀ p . Profunctor p ⇒ Refractor p Functor α β a b
 
 lens :: (α → a) → (b → α → β) → Lens α β a b
 lens get set ret = liftA2 fmap (flip set) (ret ∘ get)
