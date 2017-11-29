@@ -41,13 +41,13 @@ mapping :: (Functor f, Functor g) => AnIso α β a b -> Iso (f α) (g β) (f a) 
 mapping = (`withIso` \ f g -> iso (fmap f) (fmap g))
 
 withIso :: AnIso α β a b -> ((α -> a) -> (b -> β) -> c) -> c
-withIso x = case x (Xchg id Identity) of Xchg φ φ' -> \ f -> f φ (runIdentity ∘ φ')
+withIso x = case x (Xchg id Identity) of Xchg φ χ -> \ f -> f φ (runIdentity ∘ χ)
 
 type AnIso α β a b = Xchg a b a (Identity b) -> Xchg a b α (Identity β)
 
 data Xchg a b α β = Xchg (α -> a) (b -> β) deriving (Functor)
 
-instance Profunctor (Xchg a b) where dimap f g (Xchg φ φ') = Xchg (φ ∘ f) (g ∘ φ')
+instance Profunctor (Xchg a b) where dimap f g (Xchg φ χ) = Xchg (φ ∘ f) (g ∘ χ)
 
 fstL :: Lens (a, c) (b, c) a b
 fstL = swapL ∘ sndL
