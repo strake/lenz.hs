@@ -1,4 +1,4 @@
-module Control.Lens (Lens, Refractor, Traversal, Iso,
+module Control.Lens (Lens, Traversal, Iso,
                      lens, iso,
                      get, set, modify, mapping,
                      fstL, sndL, swapL, unitL, bitL) where
@@ -14,13 +14,11 @@ import Data.Functor.Identity
 import Data.Profunctor
 import Data.Tuple (swap)
 
-type Refractor p c α β a b = ∀ f . c f ⇒ p a (f b) → p α (f β)
+type Lens α β a b = ∀ f . Functor f => (a -> f b) -> (α -> f β)
 
-type Lens α β a b = Refractor (→) Functor α β a b
+type Traversal α β a b = ∀ f . Applicative f => (a -> f b) -> (α -> f β)
 
-type Traversal α β a b = Refractor (→) Applicative α β a b
-
-type Iso α β a b = ∀ p . Profunctor p ⇒ Refractor p Functor α β a b
+type Iso α β a b = ∀ p f . (Profunctor p, Functor f) ⇒ p a (f b) -> p α (f β)
 
 lens :: (α → a) → (b → α → β) → Lens α β a b
 lens get set ret = liftA2 fmap (flip set) (ret ∘ get)
