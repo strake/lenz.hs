@@ -1,7 +1,7 @@
 module Control.Lens (Lens, Traversal, Iso,
                      lens, iso,
                      get, set, modify, mapping,
-                     foldMapOf, foldOf, toListOf, foldrOf, foldlOf, mapAccumLOf, mapAccumROf,
+                     toListOf, foldrOf, foldlOf, mapAccumLOf, mapAccumROf,
                      fstL, sndL, swapL, unitL, bitL) where
 
 import Prelude hiding (id)
@@ -31,7 +31,10 @@ iso :: (α → a) → (b → β) → Iso α β a b
 iso f g = dimap f (fmap g)
 
 get :: ((a → Const a b) → α → Const a β) → α → a
-get l = getConst ∘ l Const
+get l = gets l id
+
+gets :: ((a -> Const c b) -> α -> Const c β) -> (a -> c) -> α -> c
+gets l f = getConst ∘ l (Const ∘ f)
 
 set :: ((a → Identity b) → α → Identity β) → b → α → β
 set l = modify l ∘ pure
@@ -51,20 +54,20 @@ data Xchg a b α β = Xchg (α -> a) (b -> β) deriving (Functor)
 
 instance Profunctor (Xchg a b) where dimap f g (Xchg φ χ) = Xchg (φ ∘ f) (g ∘ χ)
 
-foldOf :: Monoid a => Getting a α β a b -> α -> a
-foldOf l = getConst ∘ l Const
+-- foldOf :: Monoid a => Getting a α β a b -> α -> a
+-- foldOf = get
 
-foldMapOf :: Monoid c => Getting c α β a b -> (a -> c) -> α -> c
-foldMapOf l f = getConst ∘ l (Const ∘ f)
+-- foldMapOf :: Getting c α β a b -> (a -> c) -> α -> c
+-- foldMapOf = gets
 
 toListOf :: Getting (Endo [a]) α β a b -> α -> [a]
-toListOf l = flip appEndo [] ∘ getConst ∘ l (Const ∘ Endo ∘ (:))
+toListOf l = foldrOf l (:) []
 
 foldrOf :: Getting (Endo c) α β a b -> (a -> c -> c) -> c -> α -> c
-foldrOf l f z₀ = flip appEndo z₀ ∘ getConst ∘ l (Const ∘ Endo ∘ f)
+foldrOf l f z₀ = flip appEndo z₀ ∘ gets l (Endo ∘ f)
 
 foldlOf :: Getting (Dual (Endo c)) α β a b -> (c -> a -> c) -> c -> α -> c
-foldlOf l f z₀ = flip appEndo z₀ ∘ getDual ∘ getConst ∘ l (Const ∘ Dual ∘ Endo ∘ flip f)
+foldlOf l f z₀ = flip appEndo z₀ ∘ getDual ∘ gets l (Dual ∘ Endo ∘ flip f)
 
 -- foldMapAccumOf :: Monoid c => ((a -> (c, b)) -> α -> (c, β)) -> (a -> (c, b)) -> α -> (c, β)
 -- foldMapAccumOf = id
