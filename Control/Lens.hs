@@ -1,8 +1,8 @@
 module Control.Lens (Lens, Traversal, Iso,
-                     lens, iso,
+                     lens, iso, invert,
                      get, set, modify, mapping,
                      toListOf, foldrOf, foldlOf, mapAccumLOf, mapAccumROf,
-                     fstL, sndL, swapL, unitL, bitL) where
+                     fstL, sndL, swapL, unitL, bitL, constL) where
 
 import Prelude hiding (id)
 
@@ -47,6 +47,9 @@ mapping = (`withIso` \ f g -> iso (fmap f) (fmap g))
 
 withIso :: AnIso α β a b -> ((α -> a) -> (b -> β) -> c) -> c
 withIso x = case x (Xchg id Identity) of Xchg φ χ -> \ f -> f φ (runIdentity ∘ χ)
+
+invert :: AnIso α β a b -> Iso b a β α
+invert = flip withIso $ flip iso
 
 type AnIso α β a b = Xchg a b a (Identity b) -> Xchg a b α (Identity β)
 
@@ -94,3 +97,6 @@ unitL = lens (pure ()) (\ () -> id)
 
 bitL :: Bits a => Int -> Lens a a Bool Bool
 bitL = liftA2 lens (flip testBit) (flip (flip ∘ bool clearBit setBit))
+
+constL :: Iso (Const a α) (Const b β) a b
+constL = iso getConst Const
